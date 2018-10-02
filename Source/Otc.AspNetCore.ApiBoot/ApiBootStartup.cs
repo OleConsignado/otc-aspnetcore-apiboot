@@ -175,11 +175,6 @@ namespace Otc.AspNetCore.ApiBoot
 
             services.AddOtcAspNetCoreJwtAuthorizationContext(Configuration.SafeGet<JwtConfiguration>());
 
-            // TODO: Replace Otc.SessionContext by Otc.AuthorizationContext and remove this
-#pragma warning disable 618
-            services.AddOtcAspNetCoreJwtSessionContext(Configuration.SafeGet<SessionContext.AspNetCore.Jwt.JwtConfiguration>());
-#pragma warning restore 618
-
             services.AddMvc(options =>
             {
                 options.Filters.Add<ExceptionFilter>();

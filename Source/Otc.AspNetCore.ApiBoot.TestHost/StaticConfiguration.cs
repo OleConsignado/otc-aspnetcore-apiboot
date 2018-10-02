@@ -1,4 +1,4 @@
-﻿using Otc.SessionContext.AspNetCore.Jwt;
+﻿using Otc.AuthorizationContext.AspNetCore.Jwt;
 
 namespace Otc.AspNetCore.ApiBoot.TestHost
 {

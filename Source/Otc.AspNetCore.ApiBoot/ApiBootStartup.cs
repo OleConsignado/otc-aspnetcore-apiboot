@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Otc.AuthorizationContext.AspNetCore.Jwt;
 using Otc.Caching.DistributedCache.All;
 using Otc.Extensions.Configuration;
 using Otc.Mvc.Filters;
 using Otc.RequestTracking.AspNetCore;
-using Otc.SessionContext.AspNetCore.Jwt;
 using Otc.SwaggerSchemaFiltering;
 using Serilog;
 using Serilog.Formatting.Json;
@@ -173,7 +173,12 @@ namespace Otc.AspNetCore.ApiBoot
                 }
             });
 
-            services.AddOtcAspNetCoreJwtSessionContext(Configuration.SafeGet<JwtConfiguration>());
+            services.AddOtcAspNetCoreJwtAuthorizationContext(Configuration.SafeGet<JwtConfiguration>());
+
+            // TODO: Replace Otc.SessionContext by Otc.AuthorizationContext and remove this
+#pragma warning disable 618
+            services.AddOtcAspNetCoreJwtSessionContext(Configuration.SafeGet<SessionContext.AspNetCore.Jwt.JwtConfiguration>());
+#pragma warning restore 618
 
             services.AddMvc(options =>
             {

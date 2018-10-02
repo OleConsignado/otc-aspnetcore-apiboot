@@ -27,18 +27,17 @@ namespace Otc.AspNetCore.ApiBoot.TestHost
         }
 
         // TODO: Replace Otc.SessionContext by Otc.AuthorizationContext and remove this method
-#pragma warning disable 618
+        [Obsolete("Use AddAuthorization(HttpClient, IAuthorizationData). AddAuthorization(HttpClient, ISessionData) will be removed.")]
         public static HttpClient AddAuthorization(this HttpClient httpClient, SessionContext.Abstractions.ISessionData sessionData)
-#pragma warning restore 618
+
         {
             if (httpClient == null)
             {
                 throw new ArgumentNullException(nameof(httpClient));
             }
 
-#pragma warning disable 618
             var token = new SessionContext.AspNetCore.Jwt.SessionSerializer<SessionContext.Abstractions.ISessionData>(new SessionContext.AspNetCore.Jwt.JwtConfiguration()
-#pragma warning restore 618
+
             {
                 Audience = StaticConfiguration.JwtConfiguration.Audience,
                 Issuer = StaticConfiguration.JwtConfiguration.Issuer,

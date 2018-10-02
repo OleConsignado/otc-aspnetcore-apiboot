@@ -1,5 +1,5 @@
-﻿using Otc.SessionContext.Abstractions;
-using Otc.SessionContext.AspNetCore.Jwt;
+﻿using Otc.AuthorizationContext.Abstractions;
+using Otc.AuthorizationContext.AspNetCore.Jwt;
 using System;
 using System.Net.Http;
 
@@ -7,14 +7,42 @@ namespace Otc.AspNetCore.ApiBoot.TestHost
 {
     public static class HttpClientExtensions
     {
-        public static HttpClient AddAuthorization(this HttpClient httpClient, ISessionData sessionData)
+        public static HttpClient AddAuthorization(this HttpClient httpClient, IAuthorizationData authorizationData)
         {
             if (httpClient == null)
             {
                 throw new ArgumentNullException(nameof(httpClient));
             }
 
-            var token = new SessionSerializer<ISessionData>(StaticConfiguration.JwtConfiguration).Serialize(sessionData);
+            var token = new AuthorizationDataSerializer<IAuthorizationData>(StaticConfiguration.JwtConfiguration).Serialize(authorizationData);
+
+            if (httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                httpClient.DefaultRequestHeaders.Remove("Authorization");
+            }
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {token}");
+
+            return httpClient;
+        }
+
+        // TODO: Replace Otc.SessionContext by Otc.AuthorizationContext and remove this method
+        [Obsolete("Use AddAuthorization(HttpClient, IAuthorizationData). AddAuthorization(HttpClient, ISessionData) will be removed.")]
+        public static HttpClient AddAuthorization(this HttpClient httpClient, SessionContext.Abstractions.ISessionData sessionData)
+
+        {
+            if (httpClient == null)
+            {
+                throw new ArgumentNullException(nameof(httpClient));
+            }
+
+            var token = new SessionContext.AspNetCore.Jwt.SessionSerializer<SessionContext.Abstractions.ISessionData>(new SessionContext.AspNetCore.Jwt.JwtConfiguration()
+
+            {
+                Audience = StaticConfiguration.JwtConfiguration.Audience,
+                Issuer = StaticConfiguration.JwtConfiguration.Issuer,
+                SecretKey = StaticConfiguration.JwtConfiguration.SecretKey
+            }).Serialize(sessionData);
 
             if (httpClient.DefaultRequestHeaders.Contains("Authorization"))
             {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Otc.Caching.DistributedCache.All;
-using Otc.SessionContext.AspNetCore.Jwt;
+using Otc.AuthorizationContext.AspNetCore.Jwt;
 using System;
 using System.Collections.Generic;
 

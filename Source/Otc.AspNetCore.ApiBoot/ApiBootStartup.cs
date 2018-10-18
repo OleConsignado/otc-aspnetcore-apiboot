@@ -13,7 +13,6 @@ using Otc.Mvc.Filters;
 using Otc.RequestTracking.AspNetCore;
 using Otc.SwaggerSchemaFiltering;
 using Serilog;
-using Serilog.Formatting.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -162,9 +161,9 @@ namespace Otc.AspNetCore.ApiBoot
 
                 if (ApiBootOptions.EnableLogging)
                 {
+                    ValidateSerilogConfiguration();
+
                     Log.Logger = new LoggerConfiguration()
-                        .WriteTo.Async(a => a.Console(new JsonFormatter()))
-                        .Enrich.FromLogContext()
                         .ReadFrom.Configuration(Configuration)
                         .CreateLogger();
 
@@ -246,5 +245,7 @@ namespace Otc.AspNetCore.ApiBoot
                     });
             }
         }
+
+        private void ValidateSerilogConfiguration() => Configuration.GetSection("Serilog").SafeGet<SerilogConfiguration>();
     }
 }

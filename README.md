@@ -99,7 +99,7 @@ The `ApiController` base class is decorated with `Authorize` attribute (from `Mi
 
 This will make all requests requires a valid authorization creedentials or a 401 HTTP error code will get as response and the controller method will not invoked.
 
-To bypass authorization checks, you need to decorate every method you wants to expose as anonymous requests with the `AllowAnonymous` (from `Microsoft.AspNetCore.Authorization`) attribute.
+To bypass authorization checks, you need to decorate every method you wants to expose as anonymous requests with the `AllowAnonymous` attribute (from `Microsoft.AspNetCore.Authorization`).
 
 **Example:**
 
@@ -115,6 +115,8 @@ public class AutheticationController : ApiController
     public IActionResult Post(UserCreedentials creedentials) { ... }
 }
 ```
+
+> **Note:** If you wondering on how to deal with authentication/authorization, you must know that the **APIBoot** is absolutely compatible with raw AspNetCore authorization mechanism, so you may follow up the [Microsoft Docs](https://docs.microsoft.com/aspnet/core/security/authorization/?view=aspnetcore-2.1) to learn more **OR** if you interested in a more convenient way to handle with this, you should use the [Otc.AuthorizationContext](https://github.com/OleConsignado/otc-authorization-context) library which is already included in **ApiBoot** (recommended).
 
 # Included packages
 

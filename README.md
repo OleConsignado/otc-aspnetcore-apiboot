@@ -116,7 +116,7 @@ public class AutheticationController : ApiController
 }
 ```
 
-> **Note:** If you wondering on how to deal with authentication/authorization, you must know that the **APIBoot** is absolutely compatible with raw AspNetCore authorization mechanism, so you may follow up the [Microsoft Docs](https://docs.microsoft.com/aspnet/core/security/authorization/?view=aspnetcore-2.1) to learn more **OR** if you interested in a more convenient way to handle with this, you should use the [Otc.AuthorizationContext](https://github.com/OleConsignado/otc-authorization-context) library which is already included in **ApiBoot** (recommended).
+> **Note:** If you wondering on how to deal with authentication/authorization, you must know that the **APIBoot** is absolutely compatible with raw AspNetCore authorization mechanism, so you may follow up the [Microsoft Docs](https://docs.microsoft.com/aspnet/core/security/authorization/?view=aspnetcore-2.1) to learn more **OR** if you interested in a more convenient way to handle this, you should use the [Otc.AuthorizationContext](https://github.com/OleConsignado/otc-authorization-context) library (recommended) which is already included in **ApiBoot**.
 
 # Included packages
 

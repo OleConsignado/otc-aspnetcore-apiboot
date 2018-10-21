@@ -90,12 +90,12 @@ The packages listed bellow are all included on **ApiBoot** as it dependencies, s
 
 - **OTC**
 	- [Graceterm](https://github.com/OleConsignado/graceterm)
+	- [Otc.Caching.DistributedCache.All](https://github.com/OleConsignado/otc-caching)	
 	- [Otc.Extensions.Configuration](https://github.com/OleConsignado/otc-extensions)
 	- [Otc.ExceptionHandling](https://github.com/OleConsignado/otc-exception-handling) 
 	- [Otc.Mvc.Filters](https://github.com/OleConsignado/otc-exception-handling)
 	- [Otc.SwaggerSchemaFiltering](https://github.com/OleConsignado/otc-exception-handling)
 	- [Otc.RequestTracking.AspNetCore](https://github.com/OleConsignado/otc-request-tracking)
-	- [Otc.Caching.DistributedCache.All](https://github.com/OleConsignado/otc-caching)
 	- [Otc.Networking.Http.Client.AspNetCore](https://github.com/OleConsignado/otc-networking)
 	- [Otc.AuthorizationContext.AspNetCore.Jwt](https://github.com/OleConsignado/otc-authorization-context)
 - **Microsoft**

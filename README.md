@@ -7,7 +7,7 @@ So you can keep focus on the real problem you need to address instead of spend t
 
 # ApiBootStartup
 
-The key element of **ApiBoot** is the `ApiBootStartup` class which was designed to be the base class for the regular *AspNet Core WebApi* `Startup` class.
+The key element of **ApiBoot** is the `ApiBootStartup` class which was designed to be the base class of the regular *AspNet Core WebApi* `Startup` class.
 
 `ApiBootStartup` already implements the regular `Configure` and `ConfigureServices` startup methods and it require you to implement the`ConfigureApiServices` abstract method, where you place service registration logic for your custom services and `ApiMetadata` abstract get property, where you provide some metadata.
 

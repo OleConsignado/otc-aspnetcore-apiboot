@@ -55,7 +55,7 @@ using Otc.AspNetCore.ApiBoot;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiVersion("1.0")]
-public UsersController : ApiController { }
+public class UsersController : ApiController { }
 ```
 will get routed to **/v1/Users**.
 

@@ -86,7 +86,7 @@ public UsersController : ApiController
 
 # Included packages
 
-The packages listed bellow are all included on **ApiBoot** as it dependencies, so you don't need to add reference to the bellow packages in your project. 
+The packages listed bellow are all included on **ApiBoot** as it dependencies, so by using **ApiBoot** you don't need to add reference to the these packages in your project. 
 
 - **OTC**
 	- [Graceterm](https://github.com/OleConsignado/graceterm)
@@ -115,4 +115,4 @@ The packages listed bellow are all included on **ApiBoot** as it dependencies, s
 	- [Swashbuckle.AspNetCore](https://www.nuget.org/packages/Swashbuckle.AspNetCore)
 
 
-> **Note:** If you created a project from the standard template, **Microsoft** packages comes as reference by default, so, in this case, it's recomended to remove these packages once it's all already referenced by `Otc.AspNetCore.ApiBoot`. By removing these package, will also avoid version conflicts issues.
+> **Note:** If you created a project from the standard template, **Microsoft** packages comes as reference by default, so, in this case, it's recomended to remove these packages once it's all already referenced by `Otc.AspNetCore.ApiBoot`. By removing these package will also avoid version conflicts issues.

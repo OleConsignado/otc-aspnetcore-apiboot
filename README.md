@@ -44,7 +44,7 @@ By using the `ApiController` as base class you will get:
 
 ### Route based versioning
 
-`ApiController` defines **/vN/[ControllerName]** base route for your controller, where N is the version number defined in `ApiVersion` attribute on your controller class or `DefaultApiVersion` of `ApiMetadata` (provided at ´Startup´) if the controller is not decored with `ApiVersion` attribute. 
+`ApiController` defines **/vN/[ControllerName]** base route for your controller, where N is the version number defined in `ApiVersion` attribute on your controller class or `DefaultApiVersion` of `ApiMetadata` (provided at `Startup`) if the controller is not decored with `ApiVersion` attribute. 
 
 By using `ApiController` as base class, you should not decorate your controller with `Route` attribute. If you do, it will use the given route as additional route to the already define **/vN/[ControllerName]**.
 

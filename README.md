@@ -69,15 +69,13 @@ will get routed to both **/v1/Users** and **/v2/Users**.
 [ApiVersion("2.0")]
 public UsersController : ApiController 
 { 
-    [HttpGet]
-    [MapToApiVersion("1.0")]
+    [HttpGet, MapToApiVersion("1.0")] // GET /v1/Users
     public IActionResult GetV1() { ... }
 
-    [HttpGet]
-    [MapToApiVersion("2.0")]
+    [HttpGet, MapToApiVersion("2.0")] // GET /v2/Users
     public IActionResult GetV2() { ... }
 
-    [HttpPost]
+    [HttpPost] // The both POST /v1/Users and POST /v2/Users
     public IActionResult PostVersionInvariant() { ... }
 }
 ```
@@ -86,7 +84,7 @@ public UsersController : ApiController
 - POST **/v1/Users** will get routed to `PostVersionInvariant` method;
 - POST **/v2/Users** will get routed to `PostVersionInvariant` method.
 
-# Packages included
+# Included packages
 - **OTC**
 	- [Graceterm](https://github.com/OleConsignado/graceterm)
 	- [Otc.Extensions.Configuration](https://github.com/OleConsignado/otc-extensions)

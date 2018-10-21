@@ -88,7 +88,7 @@ public UsersController : ApiController
 
 The packages listed bellow are all included on **ApiBoot** as it dependencies, so by using **ApiBoot** you don't need to add reference to the these packages in your project. 
 
-- **OTC**
+- **OTC** ([Olé](https://github.com/OleConsignado))
 	- [Graceterm](https://github.com/OleConsignado/graceterm)
 	- [Otc.Caching.DistributedCache.All](https://github.com/OleConsignado/otc-caching)	
 	- [Otc.Extensions.Configuration](https://github.com/OleConsignado/otc-extensions)

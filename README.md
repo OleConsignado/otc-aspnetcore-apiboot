@@ -51,23 +51,32 @@ By using `ApiController` as base class, you should not decorate your controller 
 **[ControllerName]** segment will be extracted from controller class name by removing **Controller** suffix, example:
 
 ```cs
+using Otc.AspNetCore.ApiBoot;
+using Microsoft.AspNetCore.Mvc;
+
 [ApiVersion("1.0")]
 public UsersController : ApiController { }
 ```
 will get routed to **/v1/Users**.
 
 ```cs
+using Otc.AspNetCore.ApiBoot;
+using Microsoft.AspNetCore.Mvc;
+
 [ApiVersion("1.0")]
 [ApiVersion("2.0")]
-public UsersController : ApiController { }
+public class UsersController : ApiController { }
 ```
 will get routed to both **/v1/Users** and **/v2/Users**.
 
 #### Dealing with multiple versions
 ```cs
+using Otc.AspNetCore.ApiBoot;
+using Microsoft.AspNetCore.Mvc;
+
 [ApiVersion("1.0")]
 [ApiVersion("2.0")]
-public UsersController : ApiController 
+public class UsersController : ApiController 
 { 
     [HttpGet, MapToApiVersion("1.0")] // GET /v1/Users
     public IActionResult GetV1() { ... }
@@ -83,6 +92,29 @@ public UsersController : ApiController
 - GET **/v2/Users** will get routed to `GetV2` method;
 - POST **/v1/Users** will get routed to `PostVersionInvariant` method;
 - POST **/v2/Users** will get routed to `PostVersionInvariant` method.
+
+### Authorization
+
+The `ApiController` base class is decorated with `Authorize` attribute (from `Microsoft.AspNetCore.Authorization`) what means that your controller class, derived from `ApiController` will inherit this definition. 
+
+This will make all requests requires a valid authorization creedentials or a 401 HTTP error code will get as response and the controller method will not invoked.
+
+To bypass authorization checks, you need to decorate every method you wants to expose as anonymous requests with the `AllowAnonymous` (from `Microsoft.AspNetCore.Authorization`) attribute.
+
+**Example:**
+
+```cs
+using Otc.AspNetCore.ApiBoot;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[ApiVersion("1.0")]
+public class AutheticationController : ApiController 
+{ 
+    [HttpPost, AllowAnonymous]
+    public IActionResult Post(UserCreedentials creedentials) { ... }
+}
+```
 
 # Included packages
 

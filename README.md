@@ -38,7 +38,16 @@ public class Startup : ApiBootStartup
 ```
 
 # Packages included
-
+- **OTC**
+	- [Graceterm](https://github.com/OleConsignado/graceterm)
+	- [Otc.Extensions.Configuration](https://github.com/OleConsignado/otc-extensions)
+	- [Otc.ExceptionHandling](https://github.com/OleConsignado/otc-exception-handling) 
+	- [Otc.Mvc.Filters](https://github.com/OleConsignado/otc-exception-handling)
+	- [Otc.SwaggerSchemaFiltering](https://github.com/OleConsignado/otc-exception-handling)
+	- [Otc.RequestTracking.AspNetCore](https://github.com/OleConsignado/otc-request-tracking)
+	- [Otc.Caching.DistributedCache.All](https://github.com/OleConsignado/otc-caching)
+	- [Otc.Networking.Http.Client.AspNetCore](https://github.com/OleConsignado/otc-networking)
+	- [Otc.AuthorizationContext.AspNetCore.Jwt](https://github.com/OleConsignado/otc-authorization-context)
 - **Microsoft**
 
 	- [Microsoft.AspNetCore.All](https://www.nuget.org/packages/Microsoft.AspNetCore.All)
@@ -54,13 +63,4 @@ public class Startup : ApiBootStartup
 	- [Serilog.Sinks.RollingFile](https://www.nuget.org/packages/Serilog.Sinks.RollingFile)
 - **Swashbuckle (Swagger)**
 	- [Swashbuckle.AspNetCore](https://www.nuget.org/packages/Swashbuckle.AspNetCore)
-- **OTC**
-	- [Graceterm](https://github.com/OleConsignado/graceterm)
-	- [Otc.Extensions.Configuration](https://github.com/OleConsignado/otc-extensions)
-	- [Otc.ExceptionHandling](https://github.com/OleConsignado/otc-exception-handling) 
-	- [Otc.Mvc.Filters](https://github.com/OleConsignado/otc-exception-handling)
-	- [Otc.SwaggerSchemaFiltering](https://github.com/OleConsignado/otc-exception-handling)
-	- [Otc.RequestTracking.AspNetCore](https://github.com/OleConsignado/otc-request-tracking)
-	- [Otc.Caching.DistributedCache.All](https://github.com/OleConsignado/otc-caching)
-	- [Otc.Networking.Http.Client.AspNetCore](https://github.com/OleConsignado/otc-networking)
-	- [Otc.AuthorizationContext.AspNetCore.Jwt](https://github.com/OleConsignado/otc-authorization-context)
+

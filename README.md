@@ -37,6 +37,55 @@ public class Startup : ApiBootStartup
 }
 ```
 
+# ApiController
+Use `Otc.AspNetCore.ApiBoot.ApiController` instead of `Microsoft.AspNetCore.Mvc.ControllerBase` as base class for your controllers.
+
+By using the `ApiController` as base class you will get:
+
+### Route based versioning
+
+`ApiController` defines **/vN/[ControllerName]** base route for your controller, where N is the version number define in `ApiVersion` attribute on your controller class or `DefaultApiVersion` of `ApiMetadata` (provided in Startup) if the controller is not decored with `ApiVersion` attribute. 
+
+By using `ApiController` as base class, you should not decorate your controller with `Route` attribute. If you do, it will use as additional route to the already define **/vN/[ControllerName]**.
+
+**[ControllerName]** segment will be extracted from controller class name by removing **Controller** suffix, example:
+
+```cs
+[ApiVersion("1.0")]
+public UsersController : ApiController { }
+```
+will get routed to **/v1/Users**.
+
+```cs
+[ApiVersion("1.0")]
+[ApiVersion("2.0")]
+public UsersController : ApiController { }
+```
+will get routed to both **/v1/Users** and **/v2/Users**.
+
+Dealing with specific method version:
+```cs
+[ApiVersion("1.0")]
+[ApiVersion("2.0")]
+public UsersController : ApiController 
+{ 
+	[HttpGet]
+    [MapToApiVersion("1.0")]
+    public IActionResult GetV1() { ... }
+
+	[HttpGet]
+    [MapToApiVersion("2.0")]
+    public IActionResult GetV2() { ... }
+
+    [HttpPost]
+    public IActionResult PostVersionInvariant() { ... }
+}
+```
+- GET **/v1/Users** will get routed to `GetV1` method;
+- GET **/v2/Users** will get routed to `GetV2` method;
+- POST **/v1/Users** will get routed to `PostVersionInvariant` method;
+- POST **/v2/Users** will get routed to `PostVersionInvariant` method.
+
 # Packages included
 - **OTC**
 	- [Graceterm](https://github.com/OleConsignado/graceterm)

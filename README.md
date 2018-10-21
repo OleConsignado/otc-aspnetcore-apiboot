@@ -69,11 +69,11 @@ Dealing with specific method version:
 [ApiVersion("2.0")]
 public UsersController : ApiController 
 { 
-	[HttpGet]
+    [HttpGet]
     [MapToApiVersion("1.0")]
     public IActionResult GetV1() { ... }
 
-	[HttpGet]
+    [HttpGet]
     [MapToApiVersion("2.0")]
     public IActionResult GetV2() { ... }
 

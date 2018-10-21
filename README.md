@@ -63,7 +63,7 @@ public UsersController : ApiController { }
 ```
 will get routed to both **/v1/Users** and **/v2/Users**.
 
-**Dealing with multiple versions:**
+#### Dealing with multiple versions
 ```cs
 [ApiVersion("1.0")]
 [ApiVersion("2.0")]

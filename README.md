@@ -1,7 +1,7 @@
 # Welcome to Otc.AspNetCore.ApiBoot
 [![Build Status](https://travis-ci.org/OleConsignado/otc-aspnetcore-apiboot.svg?branch=master)](https://travis-ci.org/OleConsignado/otc-aspnetcore-apiboot)
 
-The ApiBoot goal is to reduce boilerplate while creating new *AspNet Core WebApi* projects. It brings a lot of necessary stuff that almost all API should provide. 
+The **Otc.AspNetCore.ApiBoot** (referenced here as just **ApiBoot**) goal is to reduce boilerplate while creating new *AspNet Core WebApi* projects. It brings a lot of stuff that almost all API should provide. 
 
 So you can keep focus on the real problem you need to address instead of spend time configuring logs, authentication/authorization, swagger and more.
 

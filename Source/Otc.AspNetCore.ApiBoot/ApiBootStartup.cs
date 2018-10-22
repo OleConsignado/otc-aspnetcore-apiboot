@@ -13,6 +13,8 @@ using Otc.Mvc.Filters;
 using Otc.RequestTracking.AspNetCore;
 using Otc.SwaggerSchemaFiltering;
 using Serilog;
+using Serilog.Exceptions;
+using Serilog.Formatting.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -161,13 +163,27 @@ namespace Otc.AspNetCore.ApiBoot
 
                 if (ApiBootOptions.EnableLogging)
                 {
-                    var serilogConfiguration = new ConfigurationBuilder()
-                        .AddJsonObject(Configuration.SafeGet<SerilogBase>())
-                        .Build();
+                    var loggerConfiguration = new LoggerConfiguration()
+                        .ReadFrom.Configuration(Configuration)
+                        .Enrich.WithExceptionDetails();
 
-                    Log.Logger = new LoggerConfiguration()
-                        .ReadFrom.Configuration(serilogConfiguration)
-                        .CreateLogger();
+                    if (ApiBootOptions.LoggingType != LoggingType.SerilogRawConfiguration)
+                    {
+                        loggerConfiguration = loggerConfiguration
+                            .Enrich.FromLogContext()
+                            .Enrich.WithProcessId()
+                            .Enrich.WithProcessName()
+                            .Enrich.WithThreadId()
+                            .Enrich.WithEnvironmentUserName()
+                            .Enrich.WithMachineName();
+
+                        if (ApiBootOptions.LoggingType == LoggingType.ApiBootFile)
+                            loggerConfiguration = loggerConfiguration.WriteTo.Async(a => a.File($"logs/log-.txt", rollingInterval: RollingInterval.Day));
+                        else
+                            loggerConfiguration = loggerConfiguration.WriteTo.Async(a => a.Console(new JsonFormatter()));
+                    }
+
+                    Log.Logger = loggerConfiguration.CreateLogger();
 
                     configure.AddSerilog();
                     configure.AddDebug();

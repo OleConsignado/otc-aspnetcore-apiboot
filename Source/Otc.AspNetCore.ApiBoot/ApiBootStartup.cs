@@ -161,10 +161,12 @@ namespace Otc.AspNetCore.ApiBoot
 
                 if (ApiBootOptions.EnableLogging)
                 {
-                    ValidateSerilogConfiguration();
+                    var serilogConfiguration = new ConfigurationBuilder()
+                        .AddJsonObject(Configuration.SafeGet<SerilogBase>())
+                        .Build();
 
                     Log.Logger = new LoggerConfiguration()
-                        .ReadFrom.Configuration(Configuration)
+                        .ReadFrom.Configuration(serilogConfiguration)
                         .CreateLogger();
 
                     configure.AddSerilog();
@@ -245,7 +247,5 @@ namespace Otc.AspNetCore.ApiBoot
                     });
             }
         }
-
-        private void ValidateSerilogConfiguration() => Configuration.GetSection("Serilog").SafeGet<SerilogConfiguration>();
     }
 }

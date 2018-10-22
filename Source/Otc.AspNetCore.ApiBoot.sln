@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otc.AspNetCore.ApiBoot", "O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otc.AspNetCore.ApiBoot.TestHost", "Otc.AspNetCore.ApiBoot.TestHost\Otc.AspNetCore.ApiBoot.TestHost.csproj", "{76496469-2869-4ED6-AF21-41078587A0B1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{D5E1B46D-7FFC-4F59-B1F6-20ADD68C51CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{76496469-2869-4ED6-AF21-41078587A0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76496469-2869-4ED6-AF21-41078587A0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76496469-2869-4ED6-AF21-41078587A0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5E1B46D-7FFC-4F59-B1F6-20ADD68C51CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5E1B46D-7FFC-4F59-B1F6-20ADD68C51CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5E1B46D-7FFC-4F59-B1F6-20ADD68C51CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5E1B46D-7FFC-4F59-B1F6-20ADD68C51CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

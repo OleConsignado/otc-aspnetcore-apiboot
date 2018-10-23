@@ -13,7 +13,7 @@ So you can keep focus on the real problem you need to address instead of spend t
 $ dotnet new -i apiboot
 ``` 
 
-**Creating a project**
+**Create a new project**
 
 ```sh
 $ dotnet new apiboot --name=MyProjectName

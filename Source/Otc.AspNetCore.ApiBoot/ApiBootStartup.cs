@@ -13,6 +13,7 @@ using Otc.Mvc.Filters;
 using Otc.RequestTracking.AspNetCore;
 using Otc.SwaggerSchemaFiltering;
 using Serilog;
+using Serilog.Exceptions;
 using Serilog.Formatting.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -162,11 +163,27 @@ namespace Otc.AspNetCore.ApiBoot
 
                 if (ApiBootOptions.EnableLogging)
                 {
-                    Log.Logger = new LoggerConfiguration()
-                        .WriteTo.Async(a => a.Console(new JsonFormatter()))
-                        .Enrich.FromLogContext()
+                    var loggerConfiguration = new LoggerConfiguration()
                         .ReadFrom.Configuration(Configuration)
-                        .CreateLogger();
+                        .Enrich.WithExceptionDetails();
+
+                    if (ApiBootOptions.LoggingType != LoggingType.SerilogRawConfiguration)
+                    {
+                        loggerConfiguration = loggerConfiguration
+                            .Enrich.FromLogContext()
+                            .Enrich.WithProcessId()
+                            .Enrich.WithProcessName()
+                            .Enrich.WithThreadId()
+                            .Enrich.WithEnvironmentUserName()
+                            .Enrich.WithMachineName();
+
+                        if (ApiBootOptions.LoggingType == LoggingType.ApiBootFile)
+                            loggerConfiguration = loggerConfiguration.WriteTo.Async(a => a.File($"logs/log-.txt", rollingInterval: RollingInterval.Day));
+                        else
+                            loggerConfiguration = loggerConfiguration.WriteTo.Async(a => a.Console(new JsonFormatter()));
+                    }
+
+                    Log.Logger = loggerConfiguration.CreateLogger();
 
                     configure.AddSerilog();
                     configure.AddDebug();

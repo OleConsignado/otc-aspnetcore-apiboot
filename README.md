@@ -140,12 +140,16 @@ The packages listed bellow are all included on **ApiBoot** as it dependencies, s
 	- [Microsoft.AspNetCore.Mvc.Versioning](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Versioning)
 	- [Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer)
 - **Serilog**
-	- [Serilog](https://www.nuget.org/packages/Serilog)
-	- [Serilog.Extensions.Logging](https://www.nuget.org/packages/Serilog.Extensions.Logging)
-	- [Serilog.Settings.Configuration](https://www.nuget.org/packages/Serilog.Settings.Configuration)
-	- [Serilog.Sinks.Async](https://www.nuget.org/packages/Serilog.Sinks.Async)
-	- [Serilog.Sinks.Console](https://www.nuget.org/packages/Serilog.Sinks.Console)
-	- [Serilog.Sinks.RollingFile](https://www.nuget.org/packages/Serilog.Sinks.RollingFile)
+    - [Serilog](https://www.nuget.org/packages/Serilog)
+    - [Serilog.Enrichers.Environment](https://www.nuget.org/packages/Serilog.Enrichers.Environment)
+    - [Serilog.Enrichers.Process](https://www.nuget.org/packages/Serilog.Enrichers.Process)
+    - [Serilog.Enrichers.Thread](https://www.nuget.org/packages/Serilog.Enrichers.Thread)
+    - [Serilog.Exceptions](https://www.nuget.org/packages/Serilog.Exceptions)
+    - [Serilog.Extensions.Logging](https://www.nuget.org/packages/Serilog.Extensions.Logging)
+    - [Serilog.Settings.Configuration](https://www.nuget.org/packages/Serilog.Settings.Configuration)
+    - [Serilog.Sinks.Async](https://www.nuget.org/packages/Serilog.Sinks.Async)
+    - [Serilog.Sinks.Console](https://www.nuget.org/packages/Serilog.Sinks.Console)
+    - [serilog.Sinks.File](https://www.nuget.org/packages/Serilog.Sinks.File)
 - **Swashbuckle (Swagger)**
 	- [Swashbuckle.AspNetCore](https://www.nuget.org/packages/Swashbuckle.AspNetCore)
 

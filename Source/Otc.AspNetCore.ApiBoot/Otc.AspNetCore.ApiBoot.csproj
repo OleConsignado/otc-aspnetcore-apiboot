@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>Ole Consignado</Authors>
     <Copyright>Ole Consignado (c) 2018</Copyright>
-    <VersionPrefix>2.0.2</VersionPrefix>
+    <VersionPrefix>2.0.3</VersionPrefix>
     <PackageProjectUrl>https://github.com/OleConsignado/otc-aspnetcore-apiboot</PackageProjectUrl>    
   </PropertyGroup>
 
@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Otc.ExceptionHandling" Version="2.0.0" />
-    <PackageReference Include="Otc.Extensions.Configuration" Version="2.0.1" />
+    <PackageReference Include="Otc.Extensions.Configuration" Version="2.0.2" />
     <PackageReference Include="Otc.Mvc.Filters" Version="2.0.0" />
     <PackageReference Include="Otc.RequestTracking.AspNetCore" Version="1.0.1" />
     <PackageReference Include="Otc.SwaggerSchemaFiltering" Version="2.0.0" />

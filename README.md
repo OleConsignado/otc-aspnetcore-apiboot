@@ -5,6 +5,22 @@ The **Otc.AspNetCore.ApiBoot** (referenced here as just **ApiBoot**) goal is to 
 
 So you can keep focus on the real problem you need to address instead of spend time configuring logs, authentication/authorization, swagger and more.
 
+# Quickstart
+
+**Install ApiBoot template**
+
+```sh
+$ dotnet new -i apiboot
+``` 
+
+**Creating a project**
+
+```sh
+$ dotnet new apiboot --name=MyProjectName
+```
+
+**Or clone** example repository https://github.com/OleConsignado/apiboot-example
+
 # ApiBootStartup
 
 The key element of **ApiBoot** is the `ApiBootStartup` class which was designed to be the base class of the regular *AspNet Core WebApi* `Startup` class.

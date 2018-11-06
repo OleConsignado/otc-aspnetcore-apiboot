@@ -9,11 +9,9 @@ using System.Collections.Generic;
 
 namespace Otc.AspNetCore.ApiBoot.TestHost
 {
-    public class HttpFixture<TStartup> : IDisposable
+    public class HttpFixture<TStartup>
         where TStartup : ApiBootStartup
     {
-        private List<TestServer> serverList = new List<TestServer>();
-
         public TestServer CreateServer(Action<IServiceCollection> serviceConfiguration)
         {
             var builder = WebHost.CreateDefaultBuilder()
@@ -26,18 +24,7 @@ namespace Otc.AspNetCore.ApiBoot.TestHost
                 .ConfigureServices(serviceConfiguration)
                 .UseStartup<TStartup>();
 
-            var server = new TestServer(builder);
-            serverList.Add(server);
-
-            return server;
-        }
-
-        public void Dispose()
-        {
-            foreach (var server in serverList)
-            {
-                server.Dispose();
-            }
+            return new TestServer(builder);
         }
     }
 }

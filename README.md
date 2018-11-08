@@ -29,7 +29,6 @@ The key element of **ApiBoot** is the `ApiBootStartup` class which was designed 
 
 **Startup example:**
 
-
 ```cs 
 public class Startup : ApiBootStartup
 {
@@ -149,6 +148,7 @@ The packages listed bellow are all included on **ApiBoot** as it dependencies, s
 	- [Otc.RequestTracking.AspNetCore](https://github.com/OleConsignado/otc-request-tracking)
 	- [Otc.Networking.Http.Client.AspNetCore](https://github.com/OleConsignado/otc-networking)
 	- [Otc.AuthorizationContext.AspNetCore.Jwt](https://github.com/OleConsignado/otc-authorization-context)
+	- [Otc.RequestTracking](https://github.com/OleConsignado/otc-request-tracking)
 - **Microsoft**
 
 	- [Microsoft.AspNetCore.All](https://www.nuget.org/packages/Microsoft.AspNetCore.All)

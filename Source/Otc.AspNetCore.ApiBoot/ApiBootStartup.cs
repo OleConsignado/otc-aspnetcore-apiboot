@@ -201,8 +201,9 @@ namespace Otc.AspNetCore.ApiBoot
                 if (ApiBootOptions.EnableStringEnumConverter)
                 {
                     options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 }               
+                
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
 
             ConfigureSwaggerAndApiVersioningServices(services);

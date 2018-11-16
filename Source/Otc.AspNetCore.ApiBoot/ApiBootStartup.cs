@@ -195,6 +195,14 @@ namespace Otc.AspNetCore.ApiBoot
             services.AddMvc(options =>
             {
                 options.Filters.Add<ExceptionFilter>();
+
+            }).AddJsonOptions(options =>
+            {
+                if (ApiBootOptions.EnableStringEnumConverter)
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                }               
             });
 
             ConfigureSwaggerAndApiVersioningServices(services);

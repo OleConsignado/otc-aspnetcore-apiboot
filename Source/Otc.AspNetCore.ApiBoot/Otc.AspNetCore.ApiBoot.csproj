@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>Ole Consignado</Authors>
     <Copyright>Ole Consignado (c) 2018</Copyright>
-    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionPrefix>3.1.0</VersionPrefix>
     <PackageProjectUrl>https://github.com/OleConsignado/otc-aspnetcore-apiboot</PackageProjectUrl>    
   </PropertyGroup>
 
@@ -22,7 +22,7 @@
     <PackageReference Include="Graceterm" Version="1.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-    <PackageReference Include="Otc.ExceptionHandling" Version="3.0.0" />
+    <PackageReference Include="Otc.ExceptionHandling" Version="3.1.0" />
     <PackageReference Include="Otc.Extensions.Configuration" Version="2.0.2" />
     <PackageReference Include="Otc.Mvc.Filters" Version="3.0.0" />
     <PackageReference Include="Otc.RequestTracking.AspNetCore" Version="1.0.1" />
@@ -38,8 +38,8 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="serilog.sinks.file" Version="4.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.0.0-beta1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.0.0-beta1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
     <PackageReference Include="Otc.Caching.DistributedCache.All" Version="1.0.0" />
     <PackageReference Include="Otc.Networking.Http.Client.AspNetCore" Version="1.0.0" />
     <PackageReference Include="Otc.AuthorizationContext.AspNetCore.Jwt" Version="1.0.1" />

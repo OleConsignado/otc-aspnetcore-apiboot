@@ -17,12 +17,15 @@ namespace Otc.AspNetCore.ApiBoot
 
         public async Task Invoke(HttpContext context)
         {
-            context.Response.OnStarting(
-                () =>
-                {
-                    context.Response.Headers.Add("X-Api-Version", Version);
-                    return Task.CompletedTask;
-                });
+            if (!string.IsNullOrEmpty(Version))
+            { 
+                context.Response.OnStarting(
+                    () =>
+                    {
+                        context.Response.Headers.Add("X-Api-Version", Version);
+                        return Task.CompletedTask;
+                    });
+            }
 
             await next(context);
         }

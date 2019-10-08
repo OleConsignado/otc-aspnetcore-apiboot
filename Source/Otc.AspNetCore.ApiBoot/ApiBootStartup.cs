@@ -27,7 +27,9 @@ namespace Otc.AspNetCore.ApiBoot
     {
         protected abstract ApiMetadata ApiMetadata { get; }
 
-        private static readonly string xmlCommentsFilePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, $"{PlatformServices.Default.Application.ApplicationName}.xml");
+        private static readonly string xmlCommentsFilePath =
+            Path.Combine(PlatformServices.Default.Application.ApplicationBasePath,
+                $"{PlatformServices.Default.Application.ApplicationName}.xml");
 
         protected ApiBootStartup(IConfiguration configuration)
         {
@@ -39,12 +41,17 @@ namespace Otc.AspNetCore.ApiBoot
 
         public ApiBootOptions ApiBootOptions { get; }
 
+        private string Version { get; set; } = string.Empty;
+
         private Info CreateInfoForApiVersion(ApiVersionDescription description)
         {
+            var actualVersion = string.IsNullOrEmpty(Version) ? 
+                description.ApiVersion?.ToString() : Version;
+
             var info = new Info()
             {
-                Title = $"{ApiMetadata.Name} {description.ApiVersion}",
-                Version = description.ApiVersion.ToString(),
+                Title = $"{ApiMetadata.Name} {actualVersion}",
+                Version = actualVersion,
                 Description = ApiMetadata.Description
             };
 
@@ -69,6 +76,8 @@ namespace Otc.AspNetCore.ApiBoot
                     // can also be used to control the format of the API version in route templates
                     options.SubstituteApiVersionInUrl = true;
                 });
+
+            GetFileWithApiVersion();
 
             services.AddApiVersioning(o =>
             {
@@ -107,11 +116,13 @@ namespace Otc.AspNetCore.ApiBoot
                         options.SchemaFilter<SwaggerExcludeFilter>();
 
 
-                        // note: that we have to build a temporary service provider here because one has not been created yet
+                        // note: that we have to build a temporary service provider here because one
+                        //has not been created yet
                         var tempServiceProvider = services.BuildServiceProvider();
 
                         // resolve the IApiVersionDescriptionProvider service
-                        var apiVersionDescriptionProvider = tempServiceProvider.GetRequiredService<IApiVersionDescriptionProvider>();
+                        var apiVersionDescriptionProvider = tempServiceProvider.
+                            GetRequiredService<IApiVersionDescriptionProvider>();
 
                         // add a swagger document for each discovered API version
                         // note: you might choose to skip or document deprecated API versions differently
@@ -130,13 +141,14 @@ namespace Otc.AspNetCore.ApiBoot
                         }
                         else
                         {
-                            Log.Logger.Warning("Could not read Xml comments file, path '{XmlCommentsFilePath}' not exists.", xmlCommentsFilePath);
+                            Log.Logger.Warning("Could not read Xml comments file, path '{XmlCommentsFilePath}' " +
+                                "not exists.", xmlCommentsFilePath);
                         }
                     });
             }
         }
 
-        private string _requestTrackDisableBodyCapturingForUrl;
+        private string requestTrackDisableBodyCapturingForUrl;
 
         /// <summary>
         /// Url to log request information but dont capture body (case insensitive regex pattern). 
@@ -144,12 +156,13 @@ namespace Otc.AspNetCore.ApiBoot
         /// Place to put authentication urls in order to prevent capture of credentials.
         /// </para>
         /// <para>
-        /// Only the portion after host/port, including querystring will be analyzed, in other words, the path + querystring.
+        /// Only the portion after host/port, including querystring will be analyzed, in other words, 
+        /// the path + querystring.
         /// </para>
         /// </summary>
         protected void RequestTrackingDisableBodyCapturingForUrl(string pathRegexPattern)
         {
-            _requestTrackDisableBodyCapturingForUrl = pathRegexPattern;
+            requestTrackDisableBodyCapturingForUrl = pathRegexPattern;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -178,9 +191,11 @@ namespace Otc.AspNetCore.ApiBoot
                             .Enrich.WithMachineName();
 
                         if (ApiBootOptions.LoggingType == LoggingType.ApiBootFile)
-                            loggerConfiguration = loggerConfiguration.WriteTo.Async(a => a.File($"logs/log-.txt", rollingInterval: RollingInterval.Day));
+                            loggerConfiguration = loggerConfiguration.WriteTo
+                                .Async(a => a.File($"logs/log-.txt", rollingInterval: RollingInterval.Day));
                         else
-                            loggerConfiguration = loggerConfiguration.WriteTo.Async(a => a.Console(new JsonFormatter()));
+                            loggerConfiguration = loggerConfiguration.WriteTo
+                                .Async(a => a.Console(new JsonFormatter()));
                     }
 
                     Log.Logger = loggerConfiguration.CreateLogger();
@@ -196,13 +211,15 @@ namespace Otc.AspNetCore.ApiBoot
             {
                 options.Filters.Add<ExceptionFilter>();
 
+                ConfigureMvcOptions(options);
+
             }).AddJsonOptions(options =>
             {
                 if (ApiBootOptions.EnableStringEnumConverter)
                 {
                     options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                }               
-                
+                }
+
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
 
@@ -212,24 +229,27 @@ namespace Otc.AspNetCore.ApiBoot
 
             var requestTrackerConfiguration = Configuration.SafeGet<RequestTrackerConfiguration>();
 
-            if(string.IsNullOrEmpty(requestTrackerConfiguration.ExcludeUrl))
+            if (string.IsNullOrEmpty(requestTrackerConfiguration.ExcludeUrl))
             {
                 requestTrackerConfiguration.ExcludeUrl = Regex.Escape(HealthChecksController.RoutePath);
             }
             else
             {
-                requestTrackerConfiguration.ExcludeUrl = $"({requestTrackerConfiguration.ExcludeUrl})|({Regex.Escape(HealthChecksController.RoutePath)})";
+                requestTrackerConfiguration.ExcludeUrl =
+                    $"({requestTrackerConfiguration.ExcludeUrl})|({Regex.Escape(HealthChecksController.RoutePath)})";
             }
 
-            if(!string.IsNullOrEmpty(_requestTrackDisableBodyCapturingForUrl))
+            if (!string.IsNullOrEmpty(requestTrackDisableBodyCapturingForUrl))
             {
                 if (string.IsNullOrEmpty(requestTrackerConfiguration.DisableBodyCapturingForUrl))
                 {
-                    requestTrackerConfiguration.DisableBodyCapturingForUrl = _requestTrackDisableBodyCapturingForUrl;
+                    requestTrackerConfiguration.DisableBodyCapturingForUrl = requestTrackDisableBodyCapturingForUrl;
                 }
                 else
                 {
-                    requestTrackerConfiguration.DisableBodyCapturingForUrl = $"({requestTrackerConfiguration.DisableBodyCapturingForUrl})|({_requestTrackDisableBodyCapturingForUrl})";
+                    requestTrackerConfiguration.DisableBodyCapturingForUrl =
+                        $"({requestTrackerConfiguration.DisableBodyCapturingForUrl})|" +
+                        $"({requestTrackDisableBodyCapturingForUrl})";
                 }
             }
 
@@ -241,6 +261,16 @@ namespace Otc.AspNetCore.ApiBoot
             services.AddOtcDistributedCache(Configuration.SafeGet<DistributedCacheConfiguration>());
 
             ConfigureApiServices(services);
+        }
+
+        public virtual void ConfigureMvcOptions(MvcOptions options) { }
+
+        private void GetFileWithApiVersion()
+        {
+            if (File.Exists("version"))
+            {
+                Version = File.ReadAllText("version");
+            }
         }
 
         protected abstract void ConfigureApiServices(IServiceCollection services);
@@ -256,6 +286,7 @@ namespace Otc.AspNetCore.ApiBoot
 
             app.UseApiVersioning();
             app.UseAuthentication();
+            app.UseApiBootVersion(Version);
             app.UseMvc();
 
             if (ApiBootOptions.EnableSwagger)
@@ -264,10 +295,11 @@ namespace Otc.AspNetCore.ApiBoot
                 app.UseSwaggerUI(
                     options =>
                     {
-                    // build a swagger endpoint for each discovered API version
-                    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+                        // build a swagger endpoint for each discovered API version
+                        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
                         {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                                description.GroupName.ToUpperInvariant());
                         }
                     });
             }

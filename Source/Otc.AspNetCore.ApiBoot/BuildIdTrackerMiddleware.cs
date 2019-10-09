@@ -3,26 +3,28 @@ using System.Threading.Tasks;
 
 namespace Otc.AspNetCore.ApiBoot
 {
-    public class BuildVersionMiddleware
+    public class BuildIdTrackerMiddleware
     {
+        public const string BuildIdHeaderKey = "X-Build-Id";
+
         private readonly RequestDelegate next;
 
-        public BuildVersionMiddleware(RequestDelegate next, string version)
+        public BuildIdTrackerMiddleware(RequestDelegate next, string buildId)
         {
             this.next = next;
-            this.Version = version;
+            this.buildId = buildId;
         }
 
-        private string Version { get; }
+        private readonly string buildId;
 
         public async Task Invoke(HttpContext context)
         {
-            if (!string.IsNullOrEmpty(Version))
+            if (!string.IsNullOrEmpty(buildId))
             { 
                 context.Response.OnStarting(
                     () =>
                     {
-                        context.Response.Headers.Add("X-Build-Version", Version);
+                        context.Response.Headers.Add(BuildIdHeaderKey, buildId);
                         return Task.CompletedTask;
                     });
             }

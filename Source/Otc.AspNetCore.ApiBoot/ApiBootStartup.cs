@@ -27,11 +27,12 @@ namespace Otc.AspNetCore.ApiBoot
     {
         protected abstract ApiMetadata ApiMetadata { get; }
 
-        private const string NotBuildVersionApply = "N/A";
-
         private static readonly string xmlCommentsFilePath =
             Path.Combine(PlatformServices.Default.Application.ApplicationBasePath,
                 $"{PlatformServices.Default.Application.ApplicationName}.xml");
+        private static readonly string buildIdFilePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath,
+                "buildid");
+
 
         protected ApiBootStartup(IConfiguration configuration)
         {
@@ -43,16 +44,24 @@ namespace Otc.AspNetCore.ApiBoot
 
         public ApiBootOptions ApiBootOptions { get; }
 
-        private string BuildVersion { get; set; } = string.Empty;
+        private string BuildId
+        {
+            get
+            {
+                if (File.Exists(buildIdFilePath))
+                {
+                    return File.ReadAllText(buildIdFilePath);
+                }
+
+                return "n/a";
+            }
+        }
 
         private Info CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            var buildVersion = string.IsNullOrEmpty(BuildVersion) ?
-                NotBuildVersionApply : BuildVersion;
-
             var info = new Info()
             {
-                Title = $"{ApiMetadata.Name} {buildVersion}",
+                Title = $"{ApiMetadata.Name} (Build {BuildId})",
                 Version = description.ApiVersion.ToString(),
                 Description = ApiMetadata.Description
             };
@@ -78,8 +87,6 @@ namespace Otc.AspNetCore.ApiBoot
                     // can also be used to control the format of the API version in route templates
                     options.SubstituteApiVersionInUrl = true;
                 });
-
-            GetFileWithApiVersion();
 
             services.AddApiVersioning(o =>
             {
@@ -266,15 +273,7 @@ namespace Otc.AspNetCore.ApiBoot
         }
 
         public virtual void ConfigureMvcOptions(MvcOptions options) { }
-
-        private void GetFileWithApiVersion()
-        {
-            if (File.Exists("version"))
-            {
-                BuildVersion = File.ReadAllText("version");
-            }
-        }
-
+        
         protected abstract void ConfigureApiServices(IServiceCollection services);
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
@@ -288,7 +287,7 @@ namespace Otc.AspNetCore.ApiBoot
 
             app.UseApiVersioning();
             app.UseAuthentication();
-            app.UseBuildVersion(BuildVersion);
+            app.UseBuildIdTracker(BuildId);
             app.UseMvc();
 
             if (ApiBootOptions.EnableSwagger)

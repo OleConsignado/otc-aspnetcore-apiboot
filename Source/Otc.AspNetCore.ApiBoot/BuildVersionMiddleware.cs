@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Otc.AspNetCore.ApiBoot
 {
-    public class ApiVersionMiddleware
+    public class BuildVersionMiddleware
     {
         private readonly RequestDelegate next;
 
-        public ApiVersionMiddleware(RequestDelegate next, string version)
+        public BuildVersionMiddleware(RequestDelegate next, string version)
         {
             this.next = next;
             this.Version = version;
@@ -22,7 +22,7 @@ namespace Otc.AspNetCore.ApiBoot
                 context.Response.OnStarting(
                     () =>
                     {
-                        context.Response.Headers.Add("X-Api-Version", Version);
+                        context.Response.Headers.Add("X-Build-Version", Version);
                         return Task.CompletedTask;
                     });
             }

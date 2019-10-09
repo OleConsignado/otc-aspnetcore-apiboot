@@ -27,6 +27,8 @@ namespace Otc.AspNetCore.ApiBoot
     {
         protected abstract ApiMetadata ApiMetadata { get; }
 
+        private const string NotBuildVersionApply = "N/A";
+
         private static readonly string xmlCommentsFilePath =
             Path.Combine(PlatformServices.Default.Application.ApplicationBasePath,
                 $"{PlatformServices.Default.Application.ApplicationName}.xml");
@@ -41,17 +43,17 @@ namespace Otc.AspNetCore.ApiBoot
 
         public ApiBootOptions ApiBootOptions { get; }
 
-        private string Version { get; set; } = string.Empty;
+        private string BuildVersion { get; set; } = string.Empty;
 
         private Info CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            var actualVersion = string.IsNullOrEmpty(Version) ? 
-                description.ApiVersion?.ToString() : Version;
+            var buildVersion = string.IsNullOrEmpty(BuildVersion) ?
+                NotBuildVersionApply : BuildVersion;
 
             var info = new Info()
             {
-                Title = $"{ApiMetadata.Name} {actualVersion}",
-                Version = actualVersion,
+                Title = $"{ApiMetadata.Name} {buildVersion}",
+                Version = description.ApiVersion.ToString(),
                 Description = ApiMetadata.Description
             };
 
@@ -269,7 +271,7 @@ namespace Otc.AspNetCore.ApiBoot
         {
             if (File.Exists("version"))
             {
-                Version = File.ReadAllText("version");
+                BuildVersion = File.ReadAllText("version");
             }
         }
 
@@ -286,7 +288,7 @@ namespace Otc.AspNetCore.ApiBoot
 
             app.UseApiVersioning();
             app.UseAuthentication();
-            app.UseApiBootVersion(Version);
+            app.UseBuildVersion(BuildVersion);
             app.UseMvc();
 
             if (ApiBootOptions.EnableSwagger)

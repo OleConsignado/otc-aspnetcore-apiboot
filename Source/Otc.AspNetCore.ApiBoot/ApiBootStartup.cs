@@ -50,7 +50,9 @@ namespace Otc.AspNetCore.ApiBoot
             {
                 if (File.Exists(buildIdFilePath))
                 {
-                    return File.ReadAllText(buildIdFilePath);
+                    var content = File.ReadAllText(buildIdFilePath);
+
+                    return content?.Trim();
                 }
 
                 return "n/a";

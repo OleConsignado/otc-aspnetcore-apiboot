@@ -39,7 +39,7 @@
     <PackageReference Include="serilog.sinks.file" Version="4.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
     <PackageReference Include="Otc.Caching.DistributedCache.All" Version="1.0.0" />
     <PackageReference Include="Otc.Networking.Http.Client.AspNetCore" Version="1.0.0" />
     <PackageReference Include="Otc.AuthorizationContext.AspNetCore.Jwt" Version="1.0.1" />

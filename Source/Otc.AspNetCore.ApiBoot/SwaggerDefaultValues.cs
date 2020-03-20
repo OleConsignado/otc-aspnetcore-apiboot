@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Swagger;
+﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 
@@ -6,14 +7,14 @@ namespace Otc.AspNetCore.ApiBoot
 {
     internal class SwaggerDefaultValues : IOperationFilter
     {
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (operation.Parameters == null)
             {
                 return;
             }
 
-            foreach (var parameter in operation.Parameters.OfType<NonBodyParameter>())
+            foreach (OpenApiParameter parameter in operation.Parameters)
             {
                 var description = context.ApiDescription
                                          .ParameterDescriptions
@@ -28,11 +29,6 @@ namespace Otc.AspNetCore.ApiBoot
                 if (routeInfo == null)
                 {
                     continue;
-                }
-
-                if (parameter.Default == null)
-                {
-                    parameter.Default = routeInfo.DefaultValue;
                 }
 
                 parameter.Required |= !routeInfo.IsOptional;

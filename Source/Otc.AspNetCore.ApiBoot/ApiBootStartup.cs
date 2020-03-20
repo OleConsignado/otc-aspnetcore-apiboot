@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.OpenApi.Models;
 using Otc.AuthorizationContext.AspNetCore.Jwt;
 using Otc.Caching.DistributedCache.All;
 using Otc.Extensions.Configuration;
@@ -19,6 +20,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Otc.AspNetCore.ApiBoot
@@ -59,9 +61,9 @@ namespace Otc.AspNetCore.ApiBoot
             }
         }
 
-        private Info CreateInfoForApiVersion(ApiVersionDescription description)
+        private OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            var info = new Info()
+            var info = new OpenApiInfo()
             {
                 Title = $"{ApiMetadata.Name} (Build {BuildId})",
                 Version = description.ApiVersion.ToString(),
@@ -102,30 +104,38 @@ namespace Otc.AspNetCore.ApiBoot
                 services.AddSwaggerGen(
                     options =>
                     {
-                        options.DescribeAllEnumsAsStrings();
-
                         // Autenticacao
-                        var security = new Dictionary<string, IEnumerable<string>>
+                        var security = new OpenApiSecurityRequirement()
+                        {
                             {
-                                { "Bearer", new string[] { } }
-                            };
+                                new OpenApiSecurityScheme()
+                                {
+                                    Reference = new OpenApiReference()
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    },
+                                    In = ParameterLocation.Header
+                                },
+                                new List<string>()
+                            }
+                        };
 
                         options.AddSecurityDefinition(
                             "Bearer",
-                            new ApiKeyScheme()
+                            new OpenApiSecurityScheme()
                             {
-                                In = "header",
+                                In = ParameterLocation.Header,
                                 Description = "Please insert JWT with Bearer into field",
                                 Name = "Authorization",
-                                Type = "apiKey"
+                                Type = SecuritySchemeType.ApiKey
                             });
 
                         options.AddSecurityRequirement(security);
 
                         // Filtro referente ao mecanismo de tratamento de excecoes (Otc.ExceptionHandling):
                         // Remove diversas propriedades do tipo Exception para o schema do swagger
-                        options.SchemaFilter<SwaggerExcludeFilter>();
-
+                        options.ApplyOtcDomainBaseExceptionSchemaFilter();
 
                         // note: that we have to build a temporary service provider here because one
                         //has not been created yet
@@ -180,7 +190,70 @@ namespace Otc.AspNetCore.ApiBoot
         {
             services.AddHttpContextAccessor();
             services.AddAspNetCoreHttpClientFactoryWithCorrelation();
+            services.AddControllers();
+            ConfigureLogging(services);
+            services.AddOtcAspNetCoreJwtAuthorizationContext(Configuration.SafeGet<JwtConfiguration>());
+            ConfigureMvc(services);
+            ConfigureSwaggerAndApiVersioningServices(services);
+            services.AddExceptionHandling();
+            ConfigureRequestTracker(services);
+            services.AddOtcDistributedCache(Configuration.SafeGet<DistributedCacheConfiguration>());
+            ConfigureApiServices(services);
+        }
 
+        private void ConfigureRequestTracker(IServiceCollection services)
+        {
+            var requestTrackerConfiguration = Configuration.SafeGet<RequestTrackerConfiguration>();
+
+            if (string.IsNullOrEmpty(requestTrackerConfiguration.ExcludeUrl))
+            {
+                requestTrackerConfiguration.ExcludeUrl = Regex.Escape(HealthChecksController.RoutePath);
+            }
+            else
+            {
+                requestTrackerConfiguration.ExcludeUrl =
+                    $"({requestTrackerConfiguration.ExcludeUrl})|({Regex.Escape(HealthChecksController.RoutePath)})";
+            }
+
+            if (!string.IsNullOrEmpty(requestTrackDisableBodyCapturingForUrl))
+            {
+                if (string.IsNullOrEmpty(requestTrackerConfiguration.DisableBodyCapturingForUrl))
+                {
+                    requestTrackerConfiguration.DisableBodyCapturingForUrl = requestTrackDisableBodyCapturingForUrl;
+                }
+                else
+                {
+                    requestTrackerConfiguration.DisableBodyCapturingForUrl =
+                        $"({requestTrackerConfiguration.DisableBodyCapturingForUrl})|" +
+                        $"({requestTrackDisableBodyCapturingForUrl})";
+                }
+            }
+
+            services.AddRequestTracking(requestTracker =>
+            {
+                requestTracker.Configure(requestTrackerConfiguration);
+            });
+        }
+
+        private void ConfigureMvc(IServiceCollection services)
+        {
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ExceptionFilter>();
+                ConfigureMvcOptions(options);
+            }).AddJsonOptions(options =>
+            {
+                if (ApiBootOptions.EnableStringEnumConverter)
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                }
+
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+            });
+        }
+
+        private void ConfigureLogging(IServiceCollection services)
+        {
             services.AddLogging(configure =>
             {
                 configure.ClearProviders();
@@ -212,66 +285,8 @@ namespace Otc.AspNetCore.ApiBoot
                     Log.Logger = loggerConfiguration.CreateLogger();
 
                     configure.AddSerilog();
-                    configure.AddDebug();
                 }
             });
-
-            services.AddOtcAspNetCoreJwtAuthorizationContext(Configuration.SafeGet<JwtConfiguration>());
-
-            services.AddMvc(options =>
-            {
-                options.Filters.Add<ExceptionFilter>();
-
-                ConfigureMvcOptions(options);
-
-            }).AddJsonOptions(options =>
-            {
-                if (ApiBootOptions.EnableStringEnumConverter)
-                {
-                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                }
-
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            });
-
-            ConfigureSwaggerAndApiVersioningServices(services);
-
-            services.AddExceptionHandling();
-
-            var requestTrackerConfiguration = Configuration.SafeGet<RequestTrackerConfiguration>();
-
-            if (string.IsNullOrEmpty(requestTrackerConfiguration.ExcludeUrl))
-            {
-                requestTrackerConfiguration.ExcludeUrl = Regex.Escape(HealthChecksController.RoutePath);
-            }
-            else
-            {
-                requestTrackerConfiguration.ExcludeUrl =
-                    $"({requestTrackerConfiguration.ExcludeUrl})|({Regex.Escape(HealthChecksController.RoutePath)})";
-            }
-
-            if (!string.IsNullOrEmpty(requestTrackDisableBodyCapturingForUrl))
-            {
-                if (string.IsNullOrEmpty(requestTrackerConfiguration.DisableBodyCapturingForUrl))
-                {
-                    requestTrackerConfiguration.DisableBodyCapturingForUrl = requestTrackDisableBodyCapturingForUrl;
-                }
-                else
-                {
-                    requestTrackerConfiguration.DisableBodyCapturingForUrl =
-                        $"({requestTrackerConfiguration.DisableBodyCapturingForUrl})|" +
-                        $"({requestTrackDisableBodyCapturingForUrl})";
-                }
-            }
-
-            services.AddRequestTracking(requestTracker =>
-            {
-                requestTracker.Configure(requestTrackerConfiguration);
-            });
-
-            services.AddOtcDistributedCache(Configuration.SafeGet<DistributedCacheConfiguration>());
-
-            ConfigureApiServices(services);
         }
 
         public virtual void ConfigureMvcOptions(MvcOptions options) { }
@@ -280,7 +295,7 @@ namespace Otc.AspNetCore.ApiBoot
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
-            app.UseRequestTracking();
+            //app.UseRequestTracking();
 
             app.UseGraceterm(options =>
             {
@@ -290,7 +305,12 @@ namespace Otc.AspNetCore.ApiBoot
             app.UseApiVersioning();
             app.UseAuthentication();
             app.UseBuildIdTracker(BuildId);
-            app.UseMvc();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             if (ApiBootOptions.EnableSwagger)
             {

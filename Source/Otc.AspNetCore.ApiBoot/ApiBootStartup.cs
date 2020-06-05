@@ -234,8 +234,6 @@ namespace Otc.AspNetCore.ApiBoot
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
 
-            ConfigureMvcBuilder(mvcBuilder);
-
             ConfigureSwaggerAndApiVersioningServices(services);
 
             services.AddExceptionHandling();
@@ -274,6 +272,7 @@ namespace Otc.AspNetCore.ApiBoot
             services.AddOtcDistributedCache(Configuration.SafeGet<DistributedCacheConfiguration>());
 
             ConfigureApiServices(services);
+            ConfigureMvcBuilder(mvcBuilder);
         }
 
         public virtual void ConfigureMvcOptions(MvcOptions options) { }

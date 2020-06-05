@@ -218,7 +218,7 @@ namespace Otc.AspNetCore.ApiBoot
 
             services.AddOtcAspNetCoreJwtAuthorizationContext(Configuration.SafeGet<JwtConfiguration>());
 
-            services.AddMvc(options =>
+            var mvcBuilder = services.AddMvc(options =>
             {
                 options.Filters.Add<ExceptionFilter>();
 
@@ -233,6 +233,8 @@ namespace Otc.AspNetCore.ApiBoot
 
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
+
+            ConfigureMvcBuilder(mvcBuilder);
 
             ConfigureSwaggerAndApiVersioningServices(services);
 
@@ -275,7 +277,9 @@ namespace Otc.AspNetCore.ApiBoot
         }
 
         public virtual void ConfigureMvcOptions(MvcOptions options) { }
-        
+
+        protected virtual void ConfigureMvcBuilder(IMvcBuilder mvcBuilder) { }
+
         protected abstract void ConfigureApiServices(IServiceCollection services);
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

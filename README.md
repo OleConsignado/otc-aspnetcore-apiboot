@@ -1,4 +1,4 @@
-# Welcome to Otc.AspNetCore.ApiBoot
+# Welcome to Otc.AspNetCore.ApiBoot*
 [![Build Status](https://travis-ci.org/OleConsignado/otc-aspnetcore-apiboot.svg?branch=master)](https://travis-ci.org/OleConsignado/otc-aspnetcore-apiboot)
 
 The **Otc.AspNetCore.ApiBoot** (referenced here as just **ApiBoot**) goal is to reduce boilerplate while creating new *AspNet Core WebApi* projects. It brings a lot of stuff that almost all API should provide. 

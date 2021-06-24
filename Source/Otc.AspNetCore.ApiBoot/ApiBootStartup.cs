@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.OpenApi.Models;
 using Otc.AuthorizationContext.AspNetCore.Jwt;
 using Otc.Caching.DistributedCache.All;
 using Otc.Extensions.Configuration;
@@ -15,10 +16,10 @@ using Otc.SwaggerSchemaFiltering;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Otc.AspNetCore.ApiBoot
@@ -59,9 +60,9 @@ namespace Otc.AspNetCore.ApiBoot
             }
         }
 
-        private Info CreateInfoForApiVersion(ApiVersionDescription description)
+        private OpenApiInfo CreateOpenApiInfoForApiVersion(ApiVersionDescription description)
         {
-            var info = new Info()
+            var info = new OpenApiInfo()
             {
                 Title = $"{ApiMetadata.Name} (Build {BuildId})",
                 Version = description.ApiVersion.ToString(),
@@ -102,8 +103,6 @@ namespace Otc.AspNetCore.ApiBoot
                 services.AddSwaggerGen(
                     options =>
                     {
-                        options.DescribeAllEnumsAsStrings();
-
                         // Autenticacao
                         var security = new Dictionary<string, IEnumerable<string>>
                             {
@@ -112,15 +111,33 @@ namespace Otc.AspNetCore.ApiBoot
 
                         options.AddSecurityDefinition(
                             "Bearer",
-                            new ApiKeyScheme()
+                            new OpenApiSecurityScheme()
                             {
-                                In = "header",
+                                In = ParameterLocation.Header,
                                 Description = "Please insert JWT with Bearer into field",
                                 Name = "Authorization",
-                                Type = "apiKey"
+                                Type = SecuritySchemeType.ApiKey,
+                                Scheme = "Bearer"
                             });
 
-                        options.AddSecurityRequirement(security);
+                        options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    },
+                                    Scheme = "oauth2",
+                                    Name = "Bearer",
+                                    In = ParameterLocation.Header,
+
+                                },
+                                new List<string>()
+                            }
+                        });
 
                         // Filtro referente ao mecanismo de tratamento de excecoes (Otc.ExceptionHandling):
                         // Remove diversas propriedades do tipo Exception para o schema do swagger
@@ -139,7 +156,7 @@ namespace Otc.AspNetCore.ApiBoot
                         // note: you might choose to skip or document deprecated API versions differently
                         foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
                         {
-                            options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
+                            options.SwaggerDoc(description.GroupName, CreateOpenApiInfoForApiVersion(description));
                         }
 
                         // add a custom operation filter which sets default values
@@ -220,18 +237,19 @@ namespace Otc.AspNetCore.ApiBoot
 
             var mvcBuilder = services.AddMvc(options =>
             {
+                options.EnableEndpointRouting = false;
                 options.Filters.Add<ExceptionFilter>();
 
                 ConfigureMvcOptions(options);
 
-            }).AddJsonOptions(options =>
+            }).AddNewtonsoftJson().AddJsonOptions(options =>
             {
                 if (ApiBootOptions.EnableStringEnumConverter)
                 {
-                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 }
 
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                options.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
             ConfigureSwaggerAndApiVersioningServices(services);

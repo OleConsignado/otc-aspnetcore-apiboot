@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Ole Consignado</Authors>
     <Copyright>Ole Consignado (c) 2018</Copyright>
     <VersionPrefix>3.3.1</VersionPrefix>
@@ -9,17 +9,18 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.1\Otc.AspNetCore.ApiBoot.TestHost.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp3.1\Otc.AspNetCore.ApiBoot.TestHost.xml</DocumentationFile>
     <WarningLevel>2</WarningLevel>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp2.1\Otc.AspNetCore.ApiBoot.TestHost.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netcoreapp3.1\Otc.AspNetCore.ApiBoot.TestHost.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
   </ItemGroup>
   

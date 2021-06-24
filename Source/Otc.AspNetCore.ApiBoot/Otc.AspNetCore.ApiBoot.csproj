@@ -1,47 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Ole Consignado</Authors>
-    <Copyright>Ole Consignado (c) 2018</Copyright>
-    <VersionPrefix>3.3.1</VersionPrefix>
-    <PackageProjectUrl>https://github.com/OleConsignado/otc-aspnetcore-apiboot</PackageProjectUrl>    
+    <Copyright>Ole Consignado (c) 2021</Copyright>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <PackageProjectUrl>https://github.com/OleConsignado/otc-aspnetcore-apiboot</PackageProjectUrl>
+    <Version>4.0.0-alfa1</Version>    
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.1\Otc.AspNetCore.ApiBoot.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp3.1\Otc.AspNetCore.ApiBoot.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp2.1\Otc.AspNetCore.ApiBoot.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netcoreapp3.1\Otc.AspNetCore.ApiBoot.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Graceterm" Version="1.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.16" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Otc.ExceptionHandling" Version="3.1.2" />
     <PackageReference Include="Otc.Extensions.Configuration" Version="2.0.2" />
     <PackageReference Include="Otc.Mvc.Filters" Version="3.1.2" />
     <PackageReference Include="Otc.RequestTracking.AspNetCore" Version="1.0.4" />
-    <PackageReference Include="Otc.SwaggerSchemaFiltering" Version="3.1.2" />
-    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Otc.SwaggerSchemaFiltering" Version="4.0.0-alfa1" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="serilog.enrichers.environment" Version="2.1.3" />
     <PackageReference Include="serilog.enrichers.process" Version="2.0.1" />
     <PackageReference Include="serilog.enrichers.thread" Version="3.1.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="4.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="6.1.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.4" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="1.3.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="serilog.sinks.file" Version="4.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
-    <PackageReference Include="Otc.Caching.DistributedCache.All" Version="1.0.0" />
-    <PackageReference Include="Otc.Networking.Http.Client.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="serilog.sinks.file" Version="4.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+    <PackageReference Include="Otc.Caching.DistributedCache.All" Version="1.1.0" />
+    <PackageReference Include="Otc.Networking.Http.Client.AspNetCore" Version="1.0.1" />
     <PackageReference Include="Otc.AuthorizationContext.AspNetCore.Jwt" Version="1.0.1" />
   </ItemGroup>
 </Project>

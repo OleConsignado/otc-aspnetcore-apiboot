@@ -241,7 +241,8 @@ namespace Otc.AspNetCore.ApiBoot
             {
                 options.Filters.Add<ExceptionFilter>();
                 ConfigureMvcOptions(options);
-            }).AddJsonOptions(options =>
+            }).AddNewtonsoftJson()
+            .AddJsonOptions(options =>
             {
                 if (ApiBootOptions.EnableStringEnumConverter)
                 {

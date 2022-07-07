@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Graceterm" Version="1.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.15" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Otc.ExceptionHandling" Version="3.1.2" />
     <PackageReference Include="Otc.Extensions.Configuration" Version="2.0.2" />

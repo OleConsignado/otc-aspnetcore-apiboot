@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Authors>Ole Consignado</Authors>
     <Copyright>Ole Consignado (c) 2018</Copyright>
     <VersionPrefix>4.0.0</VersionPrefix>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Graceterm" Version="1.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Otc.ExceptionHandling" Version="4.0.0-v400-beta001-build65" />
     <PackageReference Include="Otc.Extensions.Configuration" Version="2.0.2" />
